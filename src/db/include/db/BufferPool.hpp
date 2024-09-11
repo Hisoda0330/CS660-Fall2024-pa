@@ -86,4 +86,4 @@ public:
    */
   void flushFile(const std::string &file);
 };
-} // namespace db
+}
