@@ -5,9 +5,10 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-
+using namespace std;
 namespace db {
 constexpr size_t DEFAULT_NUM_PAGES = 50;
+
 /**
  * @brief Represents a buffer pool for database pages.
  * @details The BufferPool class is responsible for managing the database pages in memory.
@@ -17,7 +18,10 @@ constexpr size_t DEFAULT_NUM_PAGES = 50;
  */
 class BufferPool {
   // TODO pa1: add private members
-
+  unordered_map<PageId,Page> Pagetable;
+  unordered_map<PageId, bool> dirtyPages;
+  list<PageId> lruList;
+  const size_t maxPages = DEFAULT_NUM_PAGES;
 public:
   /**
    * @brief: Constructs a BufferPool object with the default number of pages.
