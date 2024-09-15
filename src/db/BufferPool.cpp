@@ -51,24 +51,47 @@ Page &BufferPool::getPage(const PageId &pid) {
 
 void BufferPool::markDirty(const PageId &pid) {
   // TODO pa1: Mark the page as dirty. Note that the page must already be in the buffer pool
+  if(contains(pid)){
+    dirtyPages[pid]=true;
+  }
 }
 
 bool BufferPool::isDirty(const PageId &pid) const {
   // TODO pa1: Return whether the page is dirty. Note that the page must already be in the buffer pool
+  if(contains(pid)){
+    auto it = dirtyPages.find(pid);
+    return (it != dirtyPages.end()) && it->second;
+  }else{
+    throw logic_error("can not find page in buffer pool");
+  }
 }
 
 bool BufferPool::contains(const PageId &pid) const {
   // TODO pa1: Return whether the page is in the buffer pool
+  return Pagetable.find(pid) != Pagetable.end();
 }
 
 void BufferPool::discardPage(const PageId &pid) {
   // TODO pa1: Discard the page from the buffer pool. Note that the page must already be in the buffer pool
+  if(contains(pid)){
+    Pagetable.erase(pid);
+    dirtyPages.erase(pid);
+    lruList.erase(pid);
+  }else{
+    throw logic_error("can not find page in buffer pool");
+  }
 }
 
 void BufferPool::flushPage(const PageId &pid) {
   // TODO pa1: Flush the page to disk. Note that the page must already be in the buffer pool
+  if(contains(pid)&& isDirty(pid)){
+    
+  }
 }
 
 void BufferPool::flushFile(const std::string &file) {
   // TODO pa1: Flush all pages of the file to disk
+  if(contains(pid)){
+    
+  }
 }
