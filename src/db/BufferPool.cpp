@@ -85,13 +85,18 @@ void BufferPool::discardPage(const PageId &pid) {
 void BufferPool::flushPage(const PageId &pid) {
   // TODO pa1: Flush the page to disk. Note that the page must already be in the buffer pool
   if(contains(pid)&& isDirty(pid)){
-    
+    DbFile &file = db::getDatabase().get(pid.file);
+    file.writePage(pageTable[pid], pid.page);
+    dirtyPages[pid] = false;
   }
 }
 
 void BufferPool::flushFile(const std::string &file) {
   // TODO pa1: Flush all pages of the file to disk
-  if(contains(pid)){
-    
+  for (const auto &entry : pageTable) {
+    PageId pid = entry.first;
+    if (pid.file == file && isDirty(pid)) {
+      flushPage(pid);
+    }
   }
 }
